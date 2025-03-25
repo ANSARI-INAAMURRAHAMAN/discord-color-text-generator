@@ -43,7 +43,6 @@ export default function DiscordColorGenerator() {
   const [content, setContent] = useState<string>('Welcome to Inaam Discord Colored Text Generator!');
   const [copyCount, setCopyCount] = useState(0);
   const textareaRef = useRef<HTMLDivElement>(null);
-  const [previewAnsi, setPreviewAnsi] = useState<string>('');
   
   const applyStyle = (className: string) => {
     if (!textareaRef.current) return;
@@ -127,7 +126,7 @@ export default function DiscordColorGenerator() {
   };
 
   const convertToANSI = (node: Node): string => {
-    let result = '';
+    // Remove the unused result variable
     
     // Helper function to traverse DOM and generate ANSI codes
     const traverseNodes = (currentNode: Node): string => {
@@ -139,7 +138,7 @@ export default function DiscordColorGenerator() {
       
       if (currentNode.nodeType === Node.ELEMENT_NODE) {
         const element = currentNode as HTMLElement;
-        let stylesCodes: number[] = [];
+        const stylesCodes: number[] = [];
         
         // Extract ANSI codes from class names
         Array.from(element.classList).forEach(cls => {
@@ -151,11 +150,11 @@ export default function DiscordColorGenerator() {
         
         // Sort codes by category for proper ANSI escape sequence
         // Format: ESC[style;fg;bgm
-        let styles = stylesCodes.filter(code => code < 10).sort();
-        let fg = stylesCodes.filter(code => code >= 30 && code < 40).sort();
-        let bg = stylesCodes.filter(code => code >= 40 && code < 50).sort();
+        const styles = stylesCodes.filter(code => code < 10).sort();
+        const fg = stylesCodes.filter(code => code >= 30 && code < 40).sort();
+        const bg = stylesCodes.filter(code => code >= 40 && code < 50).sort();
         
-        let codes = [...styles, ...fg, ...bg];
+        const codes = [...styles, ...fg, ...bg];
         
         // Apply ANSI codes if we have any
         if (codes.length > 0) {
@@ -245,10 +244,8 @@ export default function DiscordColorGenerator() {
   };
 
   const updatePreview = useCallback(() => {
-    if (textareaRef.current) {
-      const ansiText = convertToANSI(textareaRef.current);
-      setPreviewAnsi(ansiText);
-    }
+    // We're not using preview anymore, so we can simplify this function
+    // No need to update previewAnsi state
   }, []);
   
   // Update preview when content changes
@@ -317,16 +314,6 @@ export default function DiscordColorGenerator() {
         }}
         dangerouslySetInnerHTML={{ __html: content }}
       />
-
-      {/* Preview section - uncomment if you want to see the raw ANSI codes */}
-      {/* 
-      <div className={styles.previewContainer}>
-        <Text size="sm" mb="xs">Preview of ANSI codes:</Text>
-        <pre className={styles.previewCode}>
-          {previewAnsi.replace(/\u001b/g, '\\u001b')}
-        </pre>
-      </div>
-      */}
 
       <Group justify="center" mt="md">
         <Button 

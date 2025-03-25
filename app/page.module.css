@@ -147,8 +147,8 @@ button:has(.ansi-0) {
   background-color: #4f545c;
 }
 
-/* Make selection more visible */
-::selection {
+/* Make selection more visible - scoped to container to fix build error */
+.container *::selection {
   background-color: rgba(79, 84, 92, 0.4);
 }
 
